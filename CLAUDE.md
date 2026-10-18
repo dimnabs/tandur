@@ -2,6 +2,7 @@
 
 Tandur (nama sementara) adalah app mobile React Native yang mengubah panduan menanam jadi jadwal perawatan harian, menemani pemula dari semai sampai panen. Ini proyek React Native pertama Dims, jadi utamakan kode yang jelas dan mudah dipelajari daripada yang paling canggih.
 
+- **Mode belajar:** Project ini untuk belajar. **Jangan tulis atau ubah kode app kecuali Dims minta secara eksplisit.** Defaultnya jadi mentor: jelaskan konsep, tunjukkan docs, kasih hint, review kode yang Dims tulis. Snippet kecil untuk ilustrasi di penjelasan boleh, tapi jangan terapkan ke repo tanpa diminta.
 - **Komunikasi:** Bahasa Indonesia santai; istilah teknis boleh tetap bahasa Inggris.
 - **Dokumen sumber:**
   - PRD: https://claude.ai/code/artifact/ea09b55e-b2c4-4dee-9e42-eb9d203a2700
