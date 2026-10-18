@@ -1,0 +1,69 @@
+{
+    "id": "kangkung-di-pot",
+    "versi": 1,
+    "nama": "Kangkung di pot",
+    "ringkasan": "Mudah. Panen pertama 25–30 hari setelah semai, cukup satu pot di tempat yang kena matahari penuh.",
+    "jenis_tanaman": "sayur",
+    "kesulitan": "mudah",
+    "media": "pot",
+    "cahaya": "penuh",
+    "durasi_hari": 30,
+    "bahan": [
+        { "nama": "Benih kangkung darat", "jumlah": "[jumlah]" },
+        { "nama": "Tanah campur kompos", "jumlah": "[takaran]" },
+        { "nama": "Pupuk organik cair", "jumlah": "1 botol" }
+    ],
+    "alat": [
+        { "nama": "Pot diameter 25 cm ke atas", "jumlah": "1 buah" },
+        { "nama": "Gembor atau botol semprot", "jumlah": "1 buah" }
+    ],
+    "langkah": [
+        {
+            "id": "rendam",
+            "tipe": "sekali",
+            "judul": "Rendam benih",
+            "deskripsi": "Rendam benih semalam.",
+            "hari_mulai": 0
+        },
+        {
+            "id": "tabur",
+            "tipe": "sekali",
+            "judul": "Tabur benih",
+            "deskripsi": "Tabur benih di pot, tutup tipis dengan tanah, lalu siram.",
+            "hari_mulai": 1
+        },
+        {
+            "id": "siram",
+            "tipe": "berulang",
+            "judul": "Siram pagi",
+            "deskripsi": "Siram sampai tanah lembap, jangan sampai tergenang.",
+            "hari_mulai": 1,
+            "hari_selesai": 28,
+            "interval_hari": 1
+        },
+        {
+            "id": "pupuk",
+            "tipe": "berulang",
+            "judul": "Pupuk organik cair",
+            "deskripsi": "Beri pupuk organik cair sesuai takaran di kemasan.",
+            "hari_mulai": 7,
+            "hari_selesai": 21,
+            "interval_hari": 7
+        },
+        {
+            "id": "jarangkan",
+            "tipe": "sekali",
+            "judul": "Jarangkan bibit",
+            "deskripsi": "Sisakan bibit yang paling kuat.",
+            "hari_mulai": 10
+        },
+        {
+            "id": "panen",
+            "tipe": "sekali",
+            "judul": "Panen",
+            "deskripsi": "Panen antara hari 25–30. Potong batang dan sisakan pangkalnya supaya tumbuh lagi.",
+            "hari_mulai": 25
+        }
+    ],
+    "author_id": "tandur"
+}
