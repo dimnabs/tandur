@@ -1,0 +1,61 @@
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css";
+@import "nativewind/theme";
+
+/* ─── Theme: design tokens (light) ─────────────────────────
+   1. :root              — light defaults (all platforms)
+*/
+@layer theme {
+    :root {
+        --primary: 20 32 25;
+        --primary-foreground: 238 243 232;
+        --card: 248 248 243;
+        --secondary: 227 227 215;
+        --secondary-foreground: 20 32 25;
+        --background: 239 238 230;
+        --popover: 248 248 243;
+        --popover-foreground: 20 32 25;
+        --muted: 227 227 215;
+        --muted-foreground: 74 86 78;
+        --destructive: 138 75 15;
+        --foreground: 20 32 25;
+        --border: 227 227 215;
+        --input: 248 248 243;
+        --ring: 30 58 41;
+        --accent: 227 227 215;
+        --accent-foreground: 20 32 25;
+        --forest: 30 58 41;
+        --forest-2: 46 76 56;
+        --lime: 197 235 110;
+        --warning: 138 75 15;
+        --warning-on-dark: 242 196 141;
+        --secondary-text: 63 74 67;
+    }
+}
+
+@theme inline {
+    --color-primary: rgb(var(--primary));
+    --color-primary-foreground: rgb(var(--primary-foreground));
+    --color-card: rgb(var(--card));
+    --color-secondary: rgb(var(--secondary));
+    --color-secondary-foreground: rgb(var(--secondary-foreground));
+    --color-background: rgb(var(--background));
+    --color-popover: rgb(var(--popover));
+    --color-popover-foreground: rgb(var(--popover-foreground));
+    --color-muted: rgb(var(--muted));
+    --color-muted-foreground: rgb(var(--muted-foreground));
+    --color-destructive: rgb(var(--destructive));
+    --color-foreground: rgb(var(--foreground));
+    --color-border: rgb(var(--border));
+    --color-input: rgb(var(--input));
+    --color-ring: rgb(var(--ring));
+    --color-accent: rgb(var(--accent));
+    --color-accent-foreground: rgb(var(--accent-foreground));
+    --color-forest: rgb(var(--forest));
+    --color-forest-2: rgb(var(--forest-2));
+    --color-lime: rgb(var(--lime));
+    --color-warning: rgb(var(--warning));
+    --color-warning-on-dark: rgb(var(--warning-on-dark));
+    --color-secondary-text: rgb(var(--secondary-text));
+}

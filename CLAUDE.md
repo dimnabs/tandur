@@ -5,8 +5,8 @@ Tandur (nama sementara) adalah app mobile React Native yang mengubah panduan men
 - **Mode belajar:** Project ini untuk belajar. **Jangan tulis atau ubah kode app kecuali Dims minta secara eksplisit.** Defaultnya jadi mentor: jelaskan konsep, tunjukkan docs, kasih hint, review kode yang Dims tulis. Snippet kecil untuk ilustrasi di penjelasan boleh, tapi jangan terapkan ke repo tanpa diminta.
 - **Komunikasi:** Bahasa Indonesia santai; istilah teknis boleh tetap bahasa Inggris.
 - **Dokumen sumber:**
-  - PRD: https://claude.ai/code/artifact/ea09b55e-b2c4-4dee-9e42-eb9d203a2700
-  - Wireframe (kanvas Design, halaman "v2 · arah visual" adalah versi acuan): https://claude.ai/artifact/WpwhJtrwqujjwv4BoVUoLc
+    - PRD: https://claude.ai/code/artifact/ea09b55e-b2c4-4dee-9e42-eb9d203a2700
+    - Wireframe (kanvas Design, halaman "v2 · arah visual" adalah versi acuan): https://claude.ai/artifact/WpwhJtrwqujjwv4BoVUoLc
 - Kalau ada keputusan baru yang mengubah isi file ini, usulkan update ke CLAUDE.md.
 
 ## Konsep inti
@@ -24,12 +24,12 @@ Tandur (nama sementara) adalah app mobile React Native yang mengubah panduan men
 
 ## Scope MVP
 
-| Prioritas | Fitur |
-| --- | --- |
-| Must | Katalog plan kurasi, detail plan, mulai tanam → Kebunku, tab Hari ini (centang/tunda), notifikasi lokal |
-| Should | Jurnal foto per Kebunku, akun & sinkronisasi, buat plan sendiri |
-| Could | Fork plan, rating "berhasil panen", pengingat sesuai cuaca |
-| Won't (v1) | Feed sosial, marketplace bahan, diagnosis penyakit pakai AI |
+| Prioritas  | Fitur                                                                                                   |
+| ---------- | ------------------------------------------------------------------------------------------------------- |
+| Must       | Katalog plan kurasi, detail plan, mulai tanam → Kebunku, tab Hari ini (centang/tunda), notifikasi lokal |
+| Should     | Jurnal foto per Kebunku, akun & sinkronisasi, buat plan sendiri                                         |
+| Could      | Fork plan, rating "berhasil panen", pengingat sesuai cuaca                                              |
+| Won't (v1) | Feed sosial, marketplace bahan, diagnosis penyakit pakai AI                                             |
 
 Kerjakan fitur **Must** sampai beta sebelum menyentuh yang lain.
 
@@ -47,20 +47,20 @@ Kondisi khusus yang wajib ada: Kebunku kosong, tugas terlewat, tanpa internet (s
 
 ## Stack
 
-| Bagian | Pilihan |
-| --- | --- |
-| Setup | Expo (managed) |
-| Navigasi | Expo Router, 3 tab: Hari ini, Jelajah, Kebunku |
-| UI library | gluestack-ui v5 (komponen ditambahkan ke repo lewat CLI, jadi bisa diubah langsung) |
-| Styling | NativeWind v5 (Tailwind CSS v4) lewat `className`; token di `global.css` |
-| State | Zustand |
-| Penyimpanan lokal | expo-sqlite (Kebunku, task, jurnal) |
-| Data plan kurasi | File JSON dibundel di app |
-| Foto jurnal | expo-image-picker + expo-file-system |
-| Notifikasi | expo-notifications (lokal, terjadwal) |
-| Backend (fase 2) | Supabase: auth, database, storage foto |
-| Crash report | Sentry |
-| Build & rilis | EAS Build + EAS Submit; Play Store dulu, App Store menyusul |
+| Bagian            | Pilihan                                                                             |
+| ----------------- | ----------------------------------------------------------------------------------- |
+| Setup             | Expo (managed)                                                                      |
+| Navigasi          | Expo Router, 3 tab: Hari ini, Jelajah, Kebunku                                      |
+| UI library        | gluestack-ui v5 (komponen ditambahkan ke repo lewat CLI, jadi bisa diubah langsung) |
+| Styling           | NativeWind v5 (Tailwind CSS v4) lewat `className`; token di `global.css`            |
+| State             | Zustand                                                                             |
+| Penyimpanan lokal | expo-sqlite (Kebunku, task, jurnal)                                                 |
+| Data plan kurasi  | File JSON dibundel di app                                                           |
+| Foto jurnal       | expo-image-picker + expo-file-system                                                |
+| Notifikasi        | expo-notifications (lokal, terjadwal)                                               |
+| Backend (fase 2)  | Supabase: auth, database, storage foto                                              |
+| Crash report      | Sentry                                                                              |
+| Build & rilis     | EAS Build + EAS Submit; Play Store dulu, App Store menyusul                         |
 
 MVP berjalan **tanpa backend**. Jangan tambahkan server sebelum fase 2.
 
@@ -78,6 +78,7 @@ Jurnal: id, grow_id, tanggal, foto_uri?, catatan
 ```
 
 Aturan generate task saat "Mulai tanam":
+
 - Langkah **sekali** → satu task di `tanggal_mulai + hari_mulai`.
 - Langkah **berulang** → satu task setiap `interval_hari`, dari `hari_mulai` sampai `hari_selesai`.
 - Grow menyimpan `plan_versi` supaya perubahan plan tidak mengacaukan tanaman yang sedang berjalan.
@@ -93,24 +94,28 @@ Contoh plan (angka belum divalidasi): Kangkung di pot — rendam benih (hari 0),
 
 Warna:
 
-| Peran | Hex |
-| --- | --- |
-| Latar | `#EFEEE6` |
-| Permukaan terangkat | `#F8F8F3` |
-| Langkah tone (track, chip, kelompok) | `#E3E3D7` |
-| Teks utama | `#142019` |
-| Teks sekunder | `#3F4A43` / `#4A564E` |
-| Bidang hijau tua (header, tile ilustrasi) | `#1E3A29` |
-| Hijau tua kedua (tombol di atas bidang gelap) | `#2E4C38` |
-| Aksen limau (status aktif, progres di bidang gelap) | `#C5EB6E` |
-| Peringatan "telat" | `#8A4B0F` di latar terang, `#F2C48D` di latar gelap |
+| Peran                                               | Hex                                                 |
+| --------------------------------------------------- | --------------------------------------------------- |
+| Latar                                               | `#EFEEE6`                                           |
+| Permukaan terangkat                                 | `#F8F8F3`                                           |
+| Langkah tone (track, chip, kelompok)                | `#E3E3D7`                                           |
+| Teks utama                                          | `#142019`                                           |
+| Teks sekunder                                       | `#3F4A43` / `#4A564E`                               |
+| Bidang hijau tua (header, tile ilustrasi)           | `#1E3A29`                                           |
+| Hijau tua kedua (tombol di atas bidang gelap)       | `#2E4C38`                                           |
+| Teks di atas bidang gelap / tombol utama            | `#EEF3E8`                                           |
+| Hijau panen (diagram Jalur)                         | `#3D7A2E` untuk teks, `#4F8A3A` untuk bar           |
+| Aksen limau (status aktif, progres di bidang gelap) | `#C5EB6E`                                           |
+| Peringatan "telat"                                  | `#8A4B0F` di latar terang, `#F2C48D` di latar gelap |
 
 Tipografi:
+
 - **Bricolage Grotesque** untuk judul dan angka besar, tracking −0.02 sampai −0.05em.
 - **Figtree** untuk teks, minimal 16px untuk isi, 14px untuk keterangan.
 - Pakai `@expo-google-fonts`.
 
 Aturan:
+
 - Pemisah pakai **beda tone latar**, bukan garis/border 1px. Tidak ada bayangan, kecuali pada yang benar-benar mengambang (tab bar).
 - Satu aksen saja (limau), dipakai untuk status aktif dan progres.
 - Tombol berbentuk **pil penuh**. Area sentuh minimal **44×44**.
@@ -147,15 +152,15 @@ npx skills add emilkowalski/skills         # pakai animate-expo, emil-design-eng
 
 ## Milestone
 
-| Milestone | Isi |
-| --- | --- |
-| M0 | PRD + wireframe (selesai) |
-| M1 | Setup lewat `npm create gluestack@latest`, token tema di `global.css`, Expo Router 3 tab, SQLite, format JSON plan |
-| M2 | Katalog, detail plan, mulai tanam, generate task |
-| M3 | Tab Hari ini, centang/tunda, notifikasi bergulir |
-| M4 | 10–15 plan kurasi, jurnal foto, empty state, ikon |
-| M5 | Beta 10–20 tester |
-| M6 | Rilis Play Store |
+| Milestone | Isi                                                                                                                |
+| --------- | ------------------------------------------------------------------------------------------------------------------ |
+| M0        | PRD + wireframe (selesai)                                                                                          |
+| M1        | Setup lewat `npm create gluestack@latest`, token tema di `global.css`, Expo Router 3 tab, SQLite, format JSON plan |
+| M2        | Katalog, detail plan, mulai tanam, generate task                                                                   |
+| M3        | Tab Hari ini, centang/tunda, notifikasi bergulir                                                                   |
+| M4        | 10–15 plan kurasi, jurnal foto, empty state, ikon                                                                  |
+| M5        | Beta 10–20 tester                                                                                                  |
+| M6        | Rilis Play Store                                                                                                   |
 
 ## Pertanyaan terbuka
 
