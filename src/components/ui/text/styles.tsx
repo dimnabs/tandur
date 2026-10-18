@@ -5,14 +5,17 @@ const baseStyle = isWeb
     : "";
 
 export const textStyle = tva({
-    base: `text-foreground font-body ${baseStyle}`,
+    base: `text-foreground font-body text-base ${baseStyle}`,
 
     variants: {
         isTruncated: {
             true: "web:truncate",
         },
+        semibold: {
+            true: "font-body-semibold",
+        },
         bold: {
-            true: "font-bold",
+            true: "font-body-bold",
         },
         underline: {
             true: "underline",
@@ -21,8 +24,6 @@ export const textStyle = tva({
             true: "line-through",
         },
         size: {
-            "2xs": "text-2xs",
-            xs: "text-xs",
             sm: "text-sm",
             md: "text-base",
             lg: "text-lg",
@@ -33,14 +34,11 @@ export const textStyle = tva({
             "5xl": "text-5xl",
             "6xl": "text-6xl",
         },
-        sub: {
-            true: "text-xs",
-        },
         italic: {
             true: "italic",
         },
         highlight: {
-            true: "bg-yellow-500",
+            true: "bg-lime",
         },
     },
 });

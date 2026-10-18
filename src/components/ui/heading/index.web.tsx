@@ -15,7 +15,6 @@ const MappedHeading = memo(
             bold,
             underline,
             strikeThrough,
-            sub,
             italic,
             highlight,
             ...props
@@ -23,9 +22,7 @@ const MappedHeading = memo(
         ref,
     ) {
         switch (size) {
-            case "5xl":
-            case "4xl":
-            case "3xl":
+            case "xl":
                 return (
                     <h1
                         className={headingStyle({
@@ -34,43 +31,6 @@ const MappedHeading = memo(
                             bold: bold as boolean,
                             underline: underline as boolean,
                             strikeThrough: strikeThrough as boolean,
-                            sub: sub as boolean,
-                            italic: italic as boolean,
-                            highlight: highlight as boolean,
-                            class: className,
-                        })}
-                        {...props}
-                        ref={ref}
-                    />
-                );
-            case "2xl":
-                return (
-                    <h2
-                        className={headingStyle({
-                            size,
-                            isTruncated: isTruncated as boolean,
-                            bold: bold as boolean,
-                            underline: underline as boolean,
-                            strikeThrough: strikeThrough as boolean,
-                            sub: sub as boolean,
-                            italic: italic as boolean,
-                            highlight: highlight as boolean,
-                            class: className,
-                        })}
-                        {...props}
-                        ref={ref}
-                    />
-                );
-            case "xl":
-                return (
-                    <h3
-                        className={headingStyle({
-                            size,
-                            isTruncated: isTruncated as boolean,
-                            bold: bold as boolean,
-                            underline: underline as boolean,
-                            strikeThrough: strikeThrough as boolean,
-                            sub: sub as boolean,
                             italic: italic as boolean,
                             highlight: highlight as boolean,
                             class: className,
@@ -81,14 +41,13 @@ const MappedHeading = memo(
                 );
             case "lg":
                 return (
-                    <h4
+                    <h2
                         className={headingStyle({
                             size,
                             isTruncated: isTruncated as boolean,
                             bold: bold as boolean,
                             underline: underline as boolean,
                             strikeThrough: strikeThrough as boolean,
-                            sub: sub as boolean,
                             italic: italic as boolean,
                             highlight: highlight as boolean,
                             class: className,
@@ -99,14 +58,13 @@ const MappedHeading = memo(
                 );
             case "md":
                 return (
-                    <h5
+                    <h3
                         className={headingStyle({
                             size,
                             isTruncated: isTruncated as boolean,
                             bold: bold as boolean,
                             underline: underline as boolean,
                             strikeThrough: strikeThrough as boolean,
-                            sub: sub as boolean,
                             italic: italic as boolean,
                             highlight: highlight as boolean,
                             class: className,
@@ -116,16 +74,14 @@ const MappedHeading = memo(
                     />
                 );
             case "sm":
-            case "xs":
                 return (
-                    <h6
+                    <h4
                         className={headingStyle({
                             size,
                             isTruncated: isTruncated as boolean,
                             bold: bold as boolean,
                             underline: underline as boolean,
                             strikeThrough: strikeThrough as boolean,
-                            sub: sub as boolean,
                             italic: italic as boolean,
                             highlight: highlight as boolean,
                             class: className,
@@ -136,14 +92,13 @@ const MappedHeading = memo(
                 );
             default:
                 return (
-                    <h4
+                    <h3
                         className={headingStyle({
                             size,
                             isTruncated: isTruncated as boolean,
                             bold: bold as boolean,
                             underline: underline as boolean,
                             strikeThrough: strikeThrough as boolean,
-                            sub: sub as boolean,
                             italic: italic as boolean,
                             highlight: highlight as boolean,
                             class: className,
@@ -158,7 +113,7 @@ const MappedHeading = memo(
 
 const Heading = memo(
     forwardRef<HTMLHeadingElement, IHeadingProps>(function Heading(
-        { className, size = "lg", as: AsComp, ...props },
+        { className, size = "md", as: AsComp, ...props },
         ref,
     ) {
         const {
@@ -166,7 +121,6 @@ const Heading = memo(
             bold,
             underline,
             strikeThrough,
-            sub,
             italic,
             highlight,
         } = props;
@@ -180,7 +134,6 @@ const Heading = memo(
                         bold: bold as boolean,
                         underline: underline as boolean,
                         strikeThrough: strikeThrough as boolean,
-                        sub: sub as boolean,
                         italic: italic as boolean,
                         highlight: highlight as boolean,
                         class: className,

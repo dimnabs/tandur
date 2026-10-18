@@ -4,8 +4,6 @@ import {
     H2 as H2Base,
     H3 as H3Base,
     H4 as H4Base,
-    H5 as H5Base,
-    H6 as H6Base,
 } from "@expo/html-elements";
 import { headingStyle } from "./styles";
 import type { VariantProps } from "@gluestack-ui/utils/nativewind-utils";
@@ -20,8 +18,6 @@ const H1 = styled(H1Base, { className: "style" });
 const H2 = styled(H2Base, { className: "style" });
 const H3 = styled(H3Base, { className: "style" });
 const H4 = styled(H4Base, { className: "style" });
-const H5 = styled(H5Base, { className: "style" });
-const H6 = styled(H6Base, { className: "style" });
 
 const MappedHeading = memo(
     forwardRef<React.ComponentRef<typeof H1>, IHeadingProps>(
@@ -33,7 +29,6 @@ const MappedHeading = memo(
                 bold,
                 underline,
                 strikeThrough,
-                sub,
                 italic,
                 highlight,
                 ...props
@@ -41,9 +36,7 @@ const MappedHeading = memo(
             ref,
         ) {
             switch (size) {
-                case "5xl":
-                case "4xl":
-                case "3xl":
+                case "xl":
                     return (
                         <H1
                             className={headingStyle({
@@ -52,45 +45,6 @@ const MappedHeading = memo(
                                 bold: bold as boolean,
                                 underline: underline as boolean,
                                 strikeThrough: strikeThrough as boolean,
-                                sub: sub as boolean,
-                                italic: italic as boolean,
-                                highlight: highlight as boolean,
-                                class: className,
-                            })}
-                            {...props}
-                            // @ts-expect-error : type issue
-                            ref={ref}
-                        />
-                    );
-                case "2xl":
-                    return (
-                        <H2
-                            className={headingStyle({
-                                size,
-                                isTruncated: isTruncated as boolean,
-                                bold: bold as boolean,
-                                underline: underline as boolean,
-                                strikeThrough: strikeThrough as boolean,
-                                sub: sub as boolean,
-                                italic: italic as boolean,
-                                highlight: highlight as boolean,
-                                class: className,
-                            })}
-                            {...props}
-                            // @ts-expect-error : type issue
-                            ref={ref}
-                        />
-                    );
-                case "xl":
-                    return (
-                        <H3
-                            className={headingStyle({
-                                size,
-                                isTruncated: isTruncated as boolean,
-                                bold: bold as boolean,
-                                underline: underline as boolean,
-                                strikeThrough: strikeThrough as boolean,
-                                sub: sub as boolean,
                                 italic: italic as boolean,
                                 highlight: highlight as boolean,
                                 class: className,
@@ -102,14 +56,13 @@ const MappedHeading = memo(
                     );
                 case "lg":
                     return (
-                        <H4
+                        <H2
                             className={headingStyle({
                                 size,
                                 isTruncated: isTruncated as boolean,
                                 bold: bold as boolean,
                                 underline: underline as boolean,
                                 strikeThrough: strikeThrough as boolean,
-                                sub: sub as boolean,
                                 italic: italic as boolean,
                                 highlight: highlight as boolean,
                                 class: className,
@@ -121,14 +74,13 @@ const MappedHeading = memo(
                     );
                 case "md":
                     return (
-                        <H5
+                        <H3
                             className={headingStyle({
                                 size,
                                 isTruncated: isTruncated as boolean,
                                 bold: bold as boolean,
                                 underline: underline as boolean,
                                 strikeThrough: strikeThrough as boolean,
-                                sub: sub as boolean,
                                 italic: italic as boolean,
                                 highlight: highlight as boolean,
                                 class: className,
@@ -139,16 +91,14 @@ const MappedHeading = memo(
                         />
                     );
                 case "sm":
-                case "xs":
                     return (
-                        <H6
+                        <H4
                             className={headingStyle({
                                 size,
                                 isTruncated: isTruncated as boolean,
                                 bold: bold as boolean,
                                 underline: underline as boolean,
                                 strikeThrough: strikeThrough as boolean,
-                                sub: sub as boolean,
                                 italic: italic as boolean,
                                 highlight: highlight as boolean,
                                 class: className,
@@ -160,14 +110,13 @@ const MappedHeading = memo(
                     );
                 default:
                     return (
-                        <H4
+                        <H3
                             className={headingStyle({
                                 size,
                                 isTruncated: isTruncated as boolean,
                                 bold: bold as boolean,
                                 underline: underline as boolean,
                                 strikeThrough: strikeThrough as boolean,
-                                sub: sub as boolean,
                                 italic: italic as boolean,
                                 highlight: highlight as boolean,
                                 class: className,
@@ -184,7 +133,7 @@ const MappedHeading = memo(
 
 const Heading = memo(
     forwardRef<React.ComponentRef<typeof H1>, IHeadingProps>(function Heading(
-        { className, size = "lg", as: AsComp, ...props },
+        { className, size = "md", as: AsComp, ...props },
         ref,
     ) {
         const {
@@ -192,7 +141,6 @@ const Heading = memo(
             bold,
             underline,
             strikeThrough,
-            sub,
             italic,
             highlight,
         } = props;
@@ -206,7 +154,6 @@ const Heading = memo(
                         bold: bold as boolean,
                         underline: underline as boolean,
                         strikeThrough: strikeThrough as boolean,
-                        sub: sub as boolean,
                         italic: italic as boolean,
                         highlight: highlight as boolean,
                         class: className,

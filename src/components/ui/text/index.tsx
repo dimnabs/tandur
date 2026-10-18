@@ -16,7 +16,6 @@ const Text = React.forwardRef<React.ComponentRef<typeof RNText>, ITextProps>(
             underline,
             strikeThrough,
             size = "md",
-            sub,
             italic,
             highlight,
             ...props
@@ -31,7 +30,6 @@ const Text = React.forwardRef<React.ComponentRef<typeof RNText>, ITextProps>(
                     underline: underline as boolean,
                     strikeThrough: strikeThrough as boolean,
                     size,
-                    sub: sub as boolean,
                     italic: italic as boolean,
                     highlight: highlight as boolean,
                     class: className,
