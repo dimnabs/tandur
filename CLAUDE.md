@@ -47,20 +47,20 @@ Kondisi khusus yang wajib ada: Kebunku kosong, tugas terlewat, tanpa internet (s
 
 ## Stack
 
-| Bagian            | Pilihan                                                                             |
-| ----------------- | ----------------------------------------------------------------------------------- |
-| Setup             | Expo (managed)                                                                      |
-| Navigasi          | Expo Router, 3 tab: Hari ini, Jelajah, Kebunku                                      |
-| UI library        | gluestack-ui v5 (komponen ditambahkan ke repo lewat CLI, jadi bisa diubah langsung) |
-| Styling           | NativeWind v5 (Tailwind CSS v4) lewat `className`; token di `global.css`            |
-| State             | Zustand                                                                             |
-| Penyimpanan lokal | expo-sqlite (Kebunku, task, jurnal)                                                 |
-| Data plan kurasi  | File JSON dibundel di app                                                           |
-| Foto jurnal       | expo-image-picker + expo-file-system                                                |
-| Notifikasi        | expo-notifications (lokal, terjadwal)                                               |
-| Backend (fase 2)  | Supabase: auth, database, storage foto                                              |
-| Crash report      | Sentry                                                                              |
-| Build & rilis     | EAS Build + EAS Submit; Play Store dulu, App Store menyusul                         |
+| Bagian            | Pilihan                                                                                            |
+| ----------------- | -------------------------------------------------------------------------------------------------- |
+| Setup             | Expo (managed)                                                                                     |
+| Navigasi          | Expo Router + `NativeTabs` (`expo-router/unstable-native-tabs`), 3 tab: Hari ini, Jelajah, Kebunku |
+| UI library        | gluestack-ui v5 (komponen ditambahkan ke repo lewat CLI, jadi bisa diubah langsung)                |
+| Styling           | NativeWind v5 (Tailwind CSS v4) lewat `className`; token di `global.css`                           |
+| State             | Zustand                                                                                            |
+| Penyimpanan lokal | expo-sqlite (Kebunku, task, jurnal)                                                                |
+| Data plan kurasi  | File JSON dibundel di app                                                                          |
+| Foto jurnal       | expo-image-picker + expo-file-system                                                               |
+| Notifikasi        | expo-notifications (lokal, terjadwal)                                                              |
+| Backend (fase 2)  | Supabase: auth, database, storage foto                                                             |
+| Crash report      | Sentry                                                                                             |
+| Build & rilis     | EAS Build + EAS Submit; Play Store dulu, App Store menyusul                                        |
 
 MVP berjalan **tanpa backend**. Jangan tambahkan server sebelum fase 2.
 
@@ -121,7 +121,7 @@ Aturan:
 - Tombol berbentuk **pil penuh**. Area sentuh minimal **44×44**.
 - Tidak ada badge/pill label yang berlebihan; status ditulis sebagai teks berwarna.
 - Tidak ada emoji sebagai ikon. Ikon garis custom yang konsisten.
-- **Tab bar:** pil solid gelap `#142019` mengambang (kiri/kanan 20, bawah 28 + safe area). Tab aktif = pil limau berisi ikon + label; tab lain cukup ikon dengan `accessibilityLabel`. Konten mengalir di belakangnya, jadi beri padding bawah di list.
+- **Tab bar:** pakai `NativeTabs`, yaitu tab bar asli sistem (iOS: liquid glass, Android: Material bottom navigation). Tampilannya memang beda per platform; yang diatur cukup warna (`tintColor`, latar, indikator) dari palet. Ikon tab: SF Symbols di iOS (`sf`), Material Symbols di Android (`md`), jadi aturan "ikon garis custom" tidak berlaku untuk tab bar. API masih `unstable-`, cek ulang saat upgrade SDK. Layar detail (plan, Kebunku) ada di luar grup tab, jadi tab bar tidak tampil di sana.
 - Elemen khas: angka hari besar ("12 hari dari 30") dan diagram "Jalur N hari" di Detail plan.
 - Ilustrasi tanaman sekarang hanya SVG sementara; nanti diganti foto asli.
 
