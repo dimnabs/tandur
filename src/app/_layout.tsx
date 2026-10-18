@@ -13,6 +13,8 @@ import {
     BricolageGrotesque_800ExtraBold,
 } from "@expo-google-fonts/bricolage-grotesque";
 import { useEffect } from "react";
+import { SQLiteProvider } from "expo-sqlite";
+import { migrateDbIfNeeded } from "@/db/migrate";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -37,7 +39,9 @@ export default function RootLayout() {
 
     return (
         <GluestackUIProvider mode="light">
-            <Stack screenOptions={{ headerShown: false }} />
+            <SQLiteProvider databaseName="tandur.db" onInit={migrateDbIfNeeded}>
+                <Stack screenOptions={{ headerShown: false }} />
+            </SQLiteProvider>
         </GluestackUIProvider>
     );
 }
