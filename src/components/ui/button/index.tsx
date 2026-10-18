@@ -10,8 +10,15 @@ import {
 import { styled } from "nativewind";
 import React from "react";
 import { ActivityIndicator, Pressable, Text, View } from "react-native";
+import Animated, {
+    Easing,
+    useAnimatedStyle,
+    useSharedValue,
+    withTiming,
+} from "react-native-reanimated";
 const SCOPE = "BUTTON";
-const Root = withStyleContext(Pressable, SCOPE);
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+const Root = withStyleContext(AnimatedPressable, SCOPE);
 const StyledUIIcon = styled(UIIcon, {
     className: "style",
 });
@@ -116,6 +123,7 @@ const buttonGroupStyle = tva({
         },
     },
 });
+const PRESS_TIMING = { duration: 140, easing: Easing.out(Easing.quad) };
 type IButtonProps = Omit<
     React.ComponentPropsWithoutRef<typeof UIButton>,
     "context"
@@ -124,16 +132,48 @@ type IButtonProps = Omit<
 const Button = React.forwardRef<
     React.ElementRef<typeof UIButton>,
     IButtonProps
->(({ className, variant = "default", size = "default", ...props }, ref) => {
-    return (
-        <UIButton
-            ref={ref}
-            {...props}
-            className={buttonStyle({ variant, size, class: className })}
-            context={{ variant, size }}
-        />
-    );
-});
+>(
+    (
+        {
+            className,
+            variant = "default",
+            size = "default",
+            onPressIn,
+            onPressOut,
+            style,
+            ...props
+        },
+        ref,
+    ) => {
+        const scale = useSharedValue(1);
+        const animatedStyle = useAnimatedStyle(() => {
+            return {
+                transform: [
+                    {
+                        scale: scale.get(),
+                    },
+                ],
+            };
+        });
+        return (
+            <UIButton
+                ref={ref}
+                {...props}
+                onPressIn={(event) => {
+                    scale.set(withTiming(0.97, PRESS_TIMING));
+                    onPressIn?.(event);
+                }}
+                onPressOut={(event) => {
+                    scale.set(withTiming(1, PRESS_TIMING));
+                    onPressOut?.(event);
+                }}
+                style={[animatedStyle, style]}
+                className={buttonStyle({ variant, size, class: className })}
+                context={{ variant, size }}
+            />
+        );
+    },
+);
 type IButtonTextProps = React.ComponentPropsWithoutRef<typeof UIButton.Text> &
     VariantProps<typeof buttonTextStyle> & { className?: string };
 const ButtonText = React.forwardRef<
