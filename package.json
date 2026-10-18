@@ -3,6 +3,8 @@
     "main": "expo-router/entry",
     "version": "1.0.0",
     "dependencies": {
+        "@expo-google-fonts/bricolage-grotesque": "^0.4.1",
+        "@expo-google-fonts/figtree": "^0.4.1",
         "@expo/html-elements": "^0.12.5",
         "@expo/ui": "~57.0.25",
         "@gluestack-ui/core": "^5.0.15",

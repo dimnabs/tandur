@@ -59,3 +59,11 @@
     --color-warning-on-dark: rgb(var(--warning-on-dark));
     --color-secondary-text: rgb(var(--secondary-text));
 }
+
+@theme {
+    --font-display: "BricolageGrotesque_700Bold";
+    --font-display-heavy: "BricolageGrotesque_800ExtraBold";
+    --font-body: "Figtree_400Regular";
+    --font-body-semibold: "Figtree_600SemiBold";
+    --font-body-bold: "Figtree_700Bold";
+}
