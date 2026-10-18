@@ -2,7 +2,8 @@
 
 Tandur (nama sementara) adalah app mobile React Native yang mengubah panduan menanam jadi jadwal perawatan harian, menemani pemula dari semai sampai panen. Ini proyek React Native pertama Dims, jadi utamakan kode yang jelas dan mudah dipelajari daripada yang paling canggih.
 
-- **Mode belajar:** Project ini untuk belajar. **Jangan tulis atau ubah kode app kecuali Dims minta secara eksplisit.** Defaultnya jadi mentor: jelaskan konsep, tunjukkan docs, kasih hint, review kode yang Dims tulis. Snippet kecil untuk ilustrasi di penjelasan boleh, tapi jangan terapkan ke repo tanpa diminta.
+- **Mode belajar:** Project ini untuk belajar. **Jangan tulis atau ubah kode app kecuali Dims minta secara eksplisit.** Defaultnya jadi mentor: jelaskan konsep, tunjukkan docs, review kode yang Dims tulis. Snippet di penjelasan boleh, tapi jangan terapkan ke repo tanpa diminta.
+- **Cara mengajar:** untuk konsep yang **baru** (library/API yang belum pernah dipakai), beri contoh kode lengkap + penjelasan tiap bagian, lalu Dims yang mengetik. Hint dan pertanyaan pancingan hanya untuk konsep yang sudah pernah dipelajari. Contoh kode harus dicek dulu (typecheck) terhadap versi library yang terpasang.
 - **Komunikasi:** Bahasa Indonesia santai; istilah teknis boleh tetap bahasa Inggris.
 - **Dokumen sumber:**
     - PRD: https://claude.ai/code/artifact/ea09b55e-b2c4-4dee-9e42-eb9d203a2700
@@ -53,9 +54,10 @@ Kondisi khusus yang wajib ada: Kebunku kosong, tugas terlewat, tanpa internet (s
 | Navigasi          | Expo Router + `NativeTabs` (`expo-router/unstable-native-tabs`), 3 tab: Hari ini, Jelajah, Kebunku |
 | UI library        | gluestack-ui v5 (komponen ditambahkan ke repo lewat CLI, jadi bisa diubah langsung)                |
 | Styling           | NativeWind v5 (Tailwind CSS v4) lewat `className`; token di `global.css`                           |
-| State             | Zustand                                                                                            |
-| Penyimpanan lokal | expo-sqlite (Kebunku, task, jurnal)                                                                |
-| Data plan kurasi  | File JSON dibundel di app                                                                          |
+| State             | Zustand; setting disimpan lewat middleware `persist` ke `expo-sqlite/kv-store`                     |
+| Penyimpanan lokal | expo-sqlite (Kebunku, task, jurnal), migrasi lewat `PRAGMA user_version`                           |
+| Data plan kurasi  | File JSON dibundel di app, divalidasi dengan zod saat app dibuka                                   |
+| Animasi           | react-native-reanimated (pakai `.get()`/`.set()` karena React Compiler aktif)                      |
 | Foto jurnal       | expo-image-picker + expo-file-system                                                               |
 | Notifikasi        | expo-notifications (lokal, terjadwal)                                                              |
 | Backend (fase 2)  | Supabase: auth, database, storage foto                                                             |
@@ -67,15 +69,23 @@ MVP berjalan **tanpa backend**. Jangan tambahkan server sebelum fase 2.
 ## Model data
 
 ```
-Plan: id, nama, jenis_tanaman, kesulitan, media (pot|lahan|hidroponik),
-      cahaya, durasi_hari, bahan[], alat[], author_id, versi
-PlanStep: id, plan_id, judul, deskripsi, tipe (sekali|berulang),
-      hari_mulai, hari_selesai?, interval_hari?
+Plan (JSON): id, versi, nama, ringkasan, jenis_tanaman (sayur|tanaman-hias),
+      kesulitan (mudah|sedang|sulit), media (pot|lahan|hidroponik),
+      cahaya (penuh|sebagian|teduh), durasi_hari,
+      bahan[{nama, jumlah}], alat[{nama, jumlah}], langkah[PlanStep], author_id
+PlanStep (di dalam plan, tanpa plan_id): discriminated union pada `tipe`
+      sekali:   id, judul, deskripsi, hari_mulai
+      berulang: id, judul, deskripsi, hari_mulai, hari_selesai, interval_hari
 Grow (Kebunku): id, plan_id, plan_versi, nama_panggilan, tanggal_mulai,
       status (aktif|panen|gagal), catatan_akhir
 Task: id, grow_id, step_id, tanggal, status (belum|selesai|tunda|lewat)
 Jurnal: id, grow_id, tanggal, foto_uri?, catatan
 ```
+
+- Skema plan = zod di `src/data/plans/schema.ts`; tipe `Plan`/`PlanStep` diturunkan lewat `z.infer`. Akses plan hanya lewat `src/data/plans/index.ts` (`plans`, `getPlanById`).
+- Grow, Task, Jurnal = tabel SQLite (`grows`, `tasks`, `jurnal`) di `src/db/migrate.ts`, skema versi 1. Foreign key `ON DELETE CASCADE`, `CHECK` untuk status, index di `tasks(tanggal)` dan `tasks(grow_id)`.
+- Tanggal disimpan sebagai teks `YYYY-MM-DD`. ID bertipe teks (UUID).
+- "Hidroponik" di filter Jelajah diambil dari `media`, bukan `jenis_tanaman`.
 
 Aturan generate task saat "Mulai tanam":
 
@@ -83,7 +93,28 @@ Aturan generate task saat "Mulai tanam":
 - Langkah **berulang** → satu task setiap `interval_hari`, dari `hari_mulai` sampai `hari_selesai`.
 - Grow menyimpan `plan_versi` supaya perubahan plan tidak mengacaukan tanaman yang sedang berjalan.
 
-Contoh plan (angka belum divalidasi): Kangkung di pot — rendam benih (hari 0), tabur (hari 1), siram tiap hari (1–28), pupuk organik cair tiap 7 hari (7–21), jarangkan (hari 10), panen (25–30).
+Contoh plan (angka belum divalidasi): Kangkung di pot — rendam benih (hari 0), tabur (hari 1), siram tiap hari (1–28), pupuk organik cair tiap 7 hari (7–21), jarangkan (hari 10), panen (25–30). Sudah ada di `src/data/plans/kangkung-di-pot.json`; panen sementara ditulis sebagai `sekali` di hari 25, rentangnya di deskripsi.
+
+## Struktur kode
+
+```
+src/app/                 route saja (Expo Router)
+  _layout.tsx            root Stack (headerShown false): font, GluestackUIProvider, SQLiteProvider
+  (tabs)/_layout.tsx     NativeTabs: index (Hari ini), jelajah, kebunku
+  plan/[id].tsx          Detail plan
+  kebunku/[id].tsx       Detail Kebunku
+  profil.tsx, onboarding.tsx
+src/components/ui/       komponen gluestack yang sudah disesuaikan (button, text, heading, pressable)
+src/db/migrate.ts        skema + migrasi SQLite
+src/store/settings.ts    Zustand: onboarding, tempat menanam, pengalaman, jam pengingat
+src/data/plans/          skema zod + JSON plan kurasi
+src/global.css           token warna & font
+example/                 contoh template Expo, hanya referensi (di-ignore tsc, ESLint, Prettier)
+```
+
+- Path alias `@/*` → `src/*`, cukup dari `tsconfig.json` (tidak pakai `module-resolver` di Babel).
+- Sebelum commit: `npm run lint`, `npm run typecheck`, `npx prettier --check .` (Prettier: 4 spasi, kutip ganda).
+- Setelah `npx gluestack-ui add`, rapikan warning `import/no-duplicates` di file baru.
 
 ## Notifikasi
 
@@ -108,11 +139,15 @@ Warna:
 | Aksen limau (status aktif, progres di bidang gelap) | `#C5EB6E`                                           |
 | Peringatan "telat"                                  | `#8A4B0F` di latar terang, `#F2C48D` di latar gelap |
 
+Token di `global.css`: slot semantik gluestack diisi palet di atas (`background`, `card`, `muted`, `primary`, `border` = sama dengan `muted`, dst.; nama slot jangan diganti), plus token tambahan `forest`, `forest-2`, `lime`, `warning`, `warning-on-dark`, `secondary-text`. App dikunci ke **light mode** (`userInterfaceStyle: "light"`, provider `mode="light"`); class `dark:` di komponen gluestack masih pakai warna bawaan dan harus ditinjau kalau dark mode diaktifkan.
+
 Tipografi:
 
 - **Bricolage Grotesque** untuk judul dan angka besar, tracking −0.02 sampai −0.05em.
 - **Figtree** untuk teks, minimal 16px untuk isi, 14px untuk keterangan.
-- Pakai `@expo-google-fonts`.
+- Pakai `@expo-google-fonts`. Ketebalan yang di-load: Bricolage 700/800, Figtree 400/600/700.
+- Di RN tiap ketebalan = font terpisah, jadi **jangan pakai `font-bold`**. Pakai token: `font-display`, `font-display-heavy`, `font-body`, `font-body-semibold`, `font-body-bold`.
+- `Text` default `font-body text-base`. `Heading` default `font-display`, ukuran `xl` 40 / `lg` 34 / `md` 24 (default) / `sm` 22.
 
 Aturan:
 
@@ -152,15 +187,15 @@ npx skills add emilkowalski/skills         # pakai animate-expo, emil-design-eng
 
 ## Milestone
 
-| Milestone | Isi                                                                                                                |
-| --------- | ------------------------------------------------------------------------------------------------------------------ |
-| M0        | PRD + wireframe (selesai)                                                                                          |
-| M1        | Setup lewat `npm create gluestack@latest`, token tema di `global.css`, Expo Router 3 tab, SQLite, format JSON plan |
-| M2        | Katalog, detail plan, mulai tanam, generate task                                                                   |
-| M3        | Tab Hari ini, centang/tunda, notifikasi bergulir                                                                   |
-| M4        | 10–15 plan kurasi, jurnal foto, empty state, ikon                                                                  |
-| M5        | Beta 10–20 tester                                                                                                  |
-| M6        | Rilis Play Store                                                                                                   |
+| Milestone | Isi                                                                                                                          |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| M0        | PRD + wireframe (selesai)                                                                                                    |
+| M1        | Setup lewat `npm create gluestack@latest`, token tema di `global.css`, Expo Router 3 tab, SQLite, format JSON plan (selesai) |
+| M2        | Katalog, detail plan, mulai tanam, generate task                                                                             |
+| M3        | Tab Hari ini, centang/tunda, notifikasi bergulir                                                                             |
+| M4        | 10–15 plan kurasi, jurnal foto, empty state, ikon                                                                            |
+| M5        | Beta 10–20 tester                                                                                                            |
+| M6        | Rilis Play Store                                                                                                             |
 
 ## Pertanyaan terbuka
 
@@ -168,3 +203,5 @@ npx skills add emilkowalski/skills         # pakai animate-expo, emil-design-eng
 - Apakah tugas yang terlewat digeser otomatis atau dibiarkan?
 - Durasi tanam bayam, cabai rawit, selada hidroponik masih `[durasi]`; semua angka plan perlu divalidasi.
 - Nama final app (cek ketersediaan di Play Store).
+- Panen itu rentang hari (mis. 25–30). Perlu tipe langkah ketiga `rentang`, atau cukup `sekali` + deskripsi? Putuskan di fase 1 (pengaruh ke diagram Jalur dan perkiraan panen).
+- Layar masih pakai `pt-16` sementara; ganti dengan safe area saat membangun layar asli.
