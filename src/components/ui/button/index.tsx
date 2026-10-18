@@ -23,45 +23,41 @@ const UIButton = createButton({
     Icon: StyledUIIcon,
 });
 const buttonStyle = tva({
-    base: "rounded-md flex-row items-center justify-center data-[focus-visible=true]:web:outline-none data-[focus-visible=true]:web:ring-2 data-[disabled=true]:opacity-40 gap-2 h-fit",
+    base: "rounded-full flex-row items-center justify-center data-[focus-visible=true]:web:outline-none data-[focus-visible=true]:web:ring-2 data-[disabled=true]:opacity-40 gap-2 h-fit",
     variants: {
         variant: {
             default:
                 "bg-primary data-[hover=true]:bg-primary/90 data-[active=true]:bg-primary/90",
             destructive:
                 "bg-destructive data-[hover=true]:bg-destructive/90 data-[active=true]:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
-            outline:
-                "border border-border bg-background shadow-xs data-[hover=true]:bg-accent data-[active=true]:bg-accent dark:bg-input/[0.045] dark:border-border/90 dark:data-[hover=true]:bg-input/[0.075] dark:data-[active=true]:bg-input/[0.075]",
             secondary:
                 "bg-secondary text-secondary-foreground data-[hover=true]:bg-secondary/80 data-[active=true]:bg-secondary/80",
             ghost: "data-[hover=true]:bg-accent data-[active=true]:bg-accent dark:data-[hover=true]:bg-accent/50 dark:data-[active=true]:bg-accent/50",
             link: "text-primary underline-offset-4 data-[hover=true]:underline data-[active=true]:underline",
         },
         size: {
-            default: "px-4 py-2",
-            sm: "min-h-8 rounded-md px-3 text-xs",
-            lg: "min-h-10 rounded-md px-8",
-            icon: "min-h-9 min-w-9",
+            default: "px-6 h-14",
+            sm: "px-4 min-h-11",
+            lg: "px-8 h-16",
+            icon: "h-11 w-11",
         },
     },
 });
 const buttonTextStyle = tva({
-    base: "web:select-none font-sans",
+    base: "web:select-none font-body-bold",
     parentVariants: {
         variant: {
             default: "text-primary-foreground",
-            destructive: "text-white",
-            outline:
-                "text-foreground data-[hover=true]:text-accent-foreground data-[active=true]:text-accent-foreground",
+            destructive: "text-primary-foreground",
             secondary: "text-secondary-foreground",
             ghost: "text-foreground ",
             link: "text-primary data-[hover=true]:underline data-[active=true]:underline",
         },
         size: {
-            default: "text-sm",
-            sm: "text-xs",
-            lg: "text-sm",
-            icon: "text-sm",
+            default: "text-lg",
+            sm: "text-[17px]",
+            lg: "text-lg",
+            icon: "text-lg",
         },
     },
 });
@@ -83,9 +79,7 @@ const buttonIconStyle = tva({
     parentVariants: {
         variant: {
             default: "text-primary-foreground",
-            destructive: "text-white",
-            outline:
-                "text-foreground data-[hover=true]:text-accent-foreground data-[active=true]:text-accent-foreground",
+            destructive: "text-primary-foreground",
             secondary: "text-secondary-foreground",
             ghost: "text-foreground data-[hover=true]:text-accent-foreground data-[active=true]:text-accent-foreground",
             link: "text-primary",
